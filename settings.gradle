@@ -1,0 +1,2 @@
+rootProject.name='JNetWork'
+include ':app', ':jnetwork', ':jautocode'

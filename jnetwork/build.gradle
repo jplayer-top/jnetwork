@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        def url = rootProject.ext.url
+        def android = rootProject.ext.android
+        release {
+            buildConfigField("String", "APPID", "\"${android["applicationId"]}\"")
+            buildConfigField("boolean", "debug", "${android["debug"]}")
+            buildConfigField("String", "HOST", "\"${url["release"]}\"")
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField("String", "APPID", "\"${android["applicationId"]}\"")
+            buildConfigField("boolean", "debug", "${android["debug"]}")
+            buildConfigField("String", "HOST", "\"${url["debug"]}\"")
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //网络请求
+    implementation rootProject.ext.networkLibs
+    //RXJAVA
+    implementation rootProject.ext.rxJavaLibs
+}

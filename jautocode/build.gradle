@@ -1,0 +1,22 @@
+apply plugin: 'java-library'
+apply plugin: 'com.github.dcendents.android-maven'
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.google.auto.service:auto-service:1.0-rc3'
+    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc3'
+//    implementation files('libs/javapoet-1.8.0.jar')
+    implementation 'com.squareup:javapoet:1.8.0'
+
+//    implementation files('libs/auto-service-1.0-rc3.jar')
+}
+task makeJar(type: Jar) {
+    println "-----start code-----"
+    archivesBaseName = "autocode"//jar包名称
+    delete("build/libs/" + archivesBaseName + ".jar")
+    from('build/classes/java/main') //这里是代码编译后的jar包目录
+    //第三方库的jar包存放位置
+    from(project.zipTree("libs/javapoet-1.8.0.jar"))
+    from(project.zipTree("libs/auto-service-1.0-rc3.jar"))
+    destinationDir = file('build/libs')
+}
+makeJar.dependsOn(build)

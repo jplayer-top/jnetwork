@@ -1,0 +1,240 @@
+// 你不必关注这里，这是一个中控
+ext {
+
+    android = [
+            applicationId    : "top.jplayer.qyue",
+            compileSdkVersion: 29,
+            buildToolsVersion: "29.0.0",
+            minSdkVersion    : 21,
+            targetSdkVersion : 29,
+            versionCode      : getGitCommitCount(),
+            versionName      : "1.12.1",
+            debug            : true
+    ]
+
+    dependVersion = [
+            androidSupportSdkVersion: "28.0.0",
+            retrofitSdkVersion      : "2.3.0",
+            glideSdkVersion         : "4.9.0",
+            rxJava                  : "2.1.5",
+            rxAndroid               : "2.0.1"
+    ]
+
+    url = [
+//            "debug"  : "http://192.168.100.243:8804/api/server/",//https://api.1e2.cn/api/server/
+"debug"  : "https://api.1e2.cn/api/server/",//https://api.1e2.cn/api/server/
+//            "release": "http://39.98.65.126:8804/api/server/",
+"release": "https://api.hicmall.com.cn/api/server/",
+    ]
+    jpush = [
+            JPUSH_PKGNAME: "$android.applicationId",
+            JPUSH_APPKEY : "2d96987e37f69a1edf637802",
+            JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+    ]
+    key_store = [
+            "keyAlias"     : "hicAlias",
+            "keyPassword"  : "hic123456",
+            "storeFile"    : "../hicmall.jks",
+            "storePassword": "hic123456"
+    ]
+
+    key_rong = [
+            "debug"  : "x18ywvqfxndcc",
+            "release": "x18ywvqfxndcc"
+    ]
+    greendao = [
+            "greendao"     : 'org.greenrobot:greendao:3.2.2',
+            "schemaVersion": 1,
+            "targetGenDir" : "src/main/java",
+    ]
+    androidx = [
+            appcompat   : 'androidx.appcompat:appcompat:1.2.0-alpha03',
+            constraint  : 'androidx.constraintlayout:constraintlayout:2.0.0-beta4',
+            cardview    : 'androidx.cardview:cardview:1.0.0',
+            annotations : 'androidx.annotation:annotation:1.1.0',
+            multidex    : 'androidx.multidex:multidex:2.0.1',
+            recyclerview: 'androidx.recyclerview:recyclerview:1.1.0-beta01',
+            palette     : 'androidx.palette:palette:1.0.0'
+
+
+    ]
+    supportDeps = [
+            //--------  support  -------
+            supportv4  : "com.android.support:support-v4:$dependVersion.androidSupportSdkVersion",
+            appcompatv7: "com.android.support:appcompat-v7:$dependVersion.androidSupportSdkVersion",
+            cardview   : "com.android.support:cardview-v7:$dependVersion.androidSupportSdkVersion",
+            design     : "com.android.support:design:$dependVersion.androidSupportSdkVersion",
+            annotations: "com.android.support:support-annotations:$dependVersion.androidSupportSdkVersion",
+            constraint : "com.android.support.constraint:constraint-layout:1.0.2",
+            palette    : "com.android.support:palette-v7:$dependVersion.androidSupportSdkVersion",
+            multidex   : "com.android.support:multidex:1.0.2"
+    ]
+
+
+    retrofit = [
+            //------ retrofit和RxJava ---------
+            retrofit                 : "com.squareup.retrofit2:retrofit:$dependVersion.retrofitSdkVersion",
+            retrofitConverterGson    : "com.squareup.retrofit2:converter-gson:$dependVersion.retrofitSdkVersion",
+            retrofitConverterProtobuf: "com.squareup.retrofit2:converter-protobuf:$dependVersion.retrofitSdkVersion",
+            retrofitConverterScalars : "com.squareup.retrofit2:converter-scalars:$dependVersion.retrofitSdkVersion",
+            retrofitAdapterRxjava2   : "com.squareup.retrofit2:adapter-rxjava2:$dependVersion.retrofitSdkVersion",
+            okhttp3LoggerInterceptor : 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    ]
+
+    rxJava = [
+            rxJava   : "io.reactivex.rxjava2:rxjava:$dependVersion.rxJava",
+            rxAndroid: "io.reactivex.rxjava2:rxandroid:$dependVersion.rxAndroid"
+    ]
+    //夜间模式皮肤
+    skin = [
+            skinBase            : 'skin.support:skin-support:3.1.0-beta1',                  // skin-support 基础控件支持
+            skinDesign          : 'skin.support:skin-support-design:3.1.0-beta1',        // skin-support-design material[可选]
+            skinCardview        : 'skin.support:skin-support-cardview:3.1.0-beta1',       // skin-support-cardview   [可选]
+            skinConstraintLayout: 'skin.support:skin-support-constraint-layout:3.1.0-beta1' // skin-support-constraint-layout
+    ]
+    //换肤
+    skinlibrary = 'com.solid.skin:skinlibrary:2.0.0'
+    //RecyclerView 适配器
+    baserecyclerviewadapterhelper = 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
+    pinnedSectionItemDecoration = 'com.oushangfeng:PinnedSectionItemDecoration:1.3.2-androidx'
+    //粘性标签库
+    itemdecoration = 'com.yanyusong.y_divideritemdecoration:y_divideritemdecoration:2.0'
+    //V-layout 淘宝多状态布局
+    v_layout = 'com.alibaba.android:vlayout:1.2.9@aar'
+    //EventBus事件
+    eventBus = 'org.greenrobot:eventbus:3.1.1'
+    //ViewPager Bga Viewpager
+    bga_banner = 'cn.bingoogolapple:bga-banner:2.2.3@aar'
+    //底部栏
+    navigationbar = "devlight.io:navigationtabbar:1.2.5"
+    //沉浸式
+    barlibrary = 'com.gyf.immersionbar:immersionbar:3.0.0'
+    //动画封装库
+    viewanimator = 'com.github.florent37:viewanimator:1.0.5'
+    //下拉刷新
+    smartrefresh = 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-11'
+    //特殊头部，看情况添加
+    smartrefresh_heard = 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-11'
+    //适配方案
+    autosize = 'me.jessyan:autosize:1.1.2'
+    //自定义Toast
+    toasty = 'com.github.GrenderG:Toasty:1.1.4'
+    //Util库
+    androidUtil = 'com.blankj:utilcodex:1.25.5'
+    //butterknife
+    butterknife = "com.jakewharton:butterknife:10.1.0"
+    butterknifeAnno = "com.jakewharton:butterknife-compiler:10.1.0"
+    //流布局
+    flowlayout = 'com.hyman:flowlayout-lib:1.1.2'
+    //侧滑删除
+    easySwipeMenuLayout = 'com.github.anzaizai:EasySwipeMenuLayout:1.1.1'
+    //FlycoTabLayout
+    tablayout = 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    // 自定义Crash
+    customactivityoncrash = 'cat.ereza:customactivityoncrash:2.2.0'
+    // 加载
+    spinkit = 'com.github.ybq:Android-SpinKit:1.2.0'
+    //PickerView
+    pickerview = 'com.contrarywind:Android-PickerView:4.1.8'
+    //权限申请
+    permission = 'com.yanzhenjie:permission:2.0.0-rc4'
+    //转场动画
+    YcShareElement = 'com.github.yellowcath:YcShareElement:1.3.1'
+
+    //二维码
+    qcode = 'cn.yipianfengye.android:zxing-library:2.2'
+    //图片选择器
+    imagespickers = 'com.jaikydota.imagespickers:imagespickers:1.0.6'
+    //多边形图+图片滤镜
+    polygon = 'com.kingja.magicmirror:magicmirror:1.2.0'
+    //数据库 实时增删改查
+    debugDB = 'com.amitshekhar.android:debug-db:1.0.4'
+    // 字体工具 ticker
+    ticker = 'com.robinhood.ticker:ticker:2.0.1'
+    //仿微信滑动返回
+    swipebacklayout = 'cn.bingoogolapple:bga-swipebacklayout:1.1.8@aar'
+    //路由管理
+    aRouter = 'com.alibaba:arouter-api:1.5.0'
+    aRouterCompiler = 'com.alibaba:arouter-compiler:1.2.2'
+    //倒计时
+    countdownView = 'com.github.iwgang:countdownview:2.1.6'
+    //悬浮窗
+    floatWindow = 'com.github.yhaolpz:FloatWindow:1.0.9'
+
+    // 侧滑
+    SmartSwipe = 'com.billy.android:smart-swipe:1.1.2'
+
+
+    glide = "com.github.bumptech.glide:glide:$dependVersion.glideSdkVersion"
+    glidetransformation = 'jp.wasabeef:glide-transformations:4.0.1'
+    glideCompiler = "com.github.bumptech.glide:compiler:$dependVersion.glideSdkVersion"
+    glideOkhttp = "com.github.bumptech.glide:okhttp3-integration:$dependVersion.glideSdkVersion"
+    tbssdk = 'com.tencent.tbs.tbssdk:sdk:43697'
+    supportLibs = supportDeps.values()
+    androidxLibs = androidx.values()
+    networkLibs = retrofit.values()
+    rxJavaLibs = rxJava.values()
+    skinLibs = skin.values()
+    otherLibs = [barlibrary,
+                 glide,
+                 skinlibrary,
+                 countdownView,
+                 eventBus,
+                 androidUtil,
+                 glidetransformation,
+                 smartrefresh,
+                 smartrefresh_heard,
+                 itemdecoration,
+                 viewanimator,
+                 toasty,
+                 pickerview,
+                 flowlayout,
+                 permission,
+                 spinkit,
+                 qcode,
+                 tablayout,
+//                 polygon,
+                 swipebacklayout,
+                 ticker,
+                 autosize,
+                 customactivityoncrash,
+                 imagespickers,
+                 easySwipeMenuLayout,
+                 aRouter,
+                 floatWindow,
+                 tbssdk,
+                 pinnedSectionItemDecoration,
+                 SmartSwipe]
+    annotationProcessorLibs = [glideCompiler,
+                               aRouterCompiler]
+}
+
+static def getVersionName() {
+
+    return getGitBranch() + "_" + getGitSHA()
+}
+
+//获取Git 分支名，参考 https://blog.csdn.net/ouyang_peng/article/details/77802596
+static def getGitBranch() {
+    return 'git symbolic-ref --short -q HEAD'.execute().text.trim() //例如 master
+}
+
+//获取Git Tag
+static def getGitTag() {
+    return "'git describe --tags'.execute([], project.rootDir).text.trim()" //例如 bqt20094
+    //注意，如果没有设置 tag 的话结果为：fatal: No names found, cannot describe anything.
+}
+
+//获取Git 版本号
+static def getGitSHA() {
+    return 'git rev-parse --short HEAD'.execute().text.trim()  //例如 3d5851e
+}
+
+//获取Git 提交次数
+static def getGitCommitCount() {
+    def trim = 'git rev-list --count HEAD'.execute().text.trim()
+    if ("" == trim) {
+        trim = "1"
+    }
+    return trim.toInteger() //例如 8
+}
