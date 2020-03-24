@@ -45,7 +45,7 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     //网络请求
-    implementation rootProject.ext.networkLibs
+    api rootProject.ext.networkLibs
     //RXJAVA
-    implementation rootProject.ext.rxJavaLibs
+    api rootProject.ext.rxJavaLibs
 }
