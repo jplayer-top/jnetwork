@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +21,9 @@ import okhttp3.ResponseBody;
 import okhttp3.internal.http.HttpHeaders;
 import okio.Buffer;
 import okio.BufferedSource;
+import top.jplayer.networklibrary.utils.JNetLog;
+
+import static top.jplayer.networklibrary.utils.JNetLog.isDebug;
 
 /**
  * Created by Obl on 2018/3/13.
@@ -27,20 +31,7 @@ import okio.BufferedSource;
  */
 
 public class LoggerInterceptor implements Interceptor {
-    private static final Charset UTF8 = Charset.forName("UTF-8");
-
-    public interface Logger {
-        void log(String message);
-    }
-
-
-    public LoggerInterceptor(LoggerInterceptor.Logger logger, boolean isDebug) {
-        this.logger = logger;
-        this.isDebug = isDebug;
-    }
-
-    private final LoggerInterceptor.Logger logger;
-    private boolean isDebug;
+    private static final Charset UTF8 = StandardCharsets.UTF_8;
 
 
     @Override
@@ -60,17 +51,17 @@ public class LoggerInterceptor implements Interceptor {
         if (hasRequestBody) {
             requestStartMessage += " (" + requestBody.contentLength() + "-byte body)";
         }
-        logger.log(requestStartMessage);
+        JNetLog.e(requestStartMessage);
 
 
         if (hasRequestBody) {
             // Request body headers are only present when installed as a network interceptor. Force
             // them to be included (when available) so there values are known.
             if (requestBody.contentType() != null) {
-                logger.log("Content-Type: " + requestBody.contentType());
+                JNetLog.e("Content-Type: " + requestBody.contentType());
             }
             if (requestBody.contentLength() != -1) {
-                logger.log("Content-Length: " + requestBody.contentLength());
+                JNetLog.e("Content-Length: " + requestBody.contentLength());
             }
         }
 
@@ -79,14 +70,14 @@ public class LoggerInterceptor implements Interceptor {
             String name = headers.name(i);
             // Skip headers from the request body as they are explicitly logged above.
             if (!"Content-Type".equalsIgnoreCase(name) && !"Content-Length".equalsIgnoreCase(name)) {
-                logger.log(name + ": " + headers.value(i));
+                JNetLog.e(name + ": " + headers.value(i));
             }
         }
 
         if (!hasRequestBody) {
-            logger.log("--> END " + request.method());
+            JNetLog.e("--> END " + request.method());
         } else if (bodyEncoded(request.headers())) {
-            logger.log("--> END " + request.method() + " (encoded body omitted)");
+            JNetLog.e("--> END " + request.method() + " (encoded body omitted)");
         } else {
             Buffer buffer = new Buffer();
             requestBody.writeTo(buffer);
@@ -97,15 +88,15 @@ public class LoggerInterceptor implements Interceptor {
                 charset = contentType.charset(UTF8);
             }
 
-            logger.log("");
+            JNetLog.e("");
             if (isPlaintext(buffer)) {
                 String message = buffer.readString(charset);
 
-                logger.log(message);
-                logger.log("--> END " + request.method()
+                JNetLog.e(message);
+                JNetLog.e("--> END " + request.method()
                         + " (" + requestBody.contentLength() + "-byte body)");
             } else {
-                logger.log("--> END " + request.method() + " (binary "
+                JNetLog.e("--> END " + request.method() + " (binary "
                         + requestBody.contentLength() + "-byte body omitted)");
             }
         }
@@ -115,7 +106,7 @@ public class LoggerInterceptor implements Interceptor {
         try {
             response = chain.proceed(request);
         } catch (Exception e) {
-            logger.log("<-- HTTP FAILED: " + e);
+            JNetLog.e("<-- HTTP FAILED: " + e);
             throw e;
         }
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
@@ -123,19 +114,19 @@ public class LoggerInterceptor implements Interceptor {
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
         String bodySize = contentLength != -1 ? contentLength + "-byte" : "unknown-length";
-        logger.log("<-- " + response.code()
+        JNetLog.e("<-- " + response.code()
                 + ' ' + response.message() + ' '
                 + response.request().url()
                 + " (" + tookMs + "ms" + (", " + bodySize + " body") + ')');
 
         for (int i = 0, count = headers.size(); i < count; i++) {
-            logger.log(headers.name(i) + ": " + headers.value(i));
+            JNetLog.e(headers.name(i) + ": " + headers.value(i));
         }
 
         if (!HttpHeaders.hasBody(response)) {
-            logger.log("<-- END HTTP");
+            JNetLog.e("<-- END HTTP");
         } else if (bodyEncoded(response.headers())) {
-            logger.log("<-- END HTTP (encoded body omitted)");
+            JNetLog.e("<-- END HTTP (encoded body omitted)");
         } else {
             BufferedSource source = responseBody.source();
             source.request(Long.MAX_VALUE); // Buffer the entire body.
@@ -147,26 +138,26 @@ public class LoggerInterceptor implements Interceptor {
                 try {
                     charset = contentType.charset(UTF8);
                 } catch (UnsupportedCharsetException e) {
-                    logger.log("");
-                    logger.log("Couldn't decode the response body; charset is likely malformed.");
-                    logger.log("<-- END HTTP");
+                    JNetLog.e("");
+                    JNetLog.e("Couldn't decode the response body; charset is likely malformed.");
+                    JNetLog.e("<-- END HTTP");
 
                     return response;
                 }
             }
 
             if (!isPlaintext(buffer)) {
-                logger.log("");
-                logger.log("<-- END HTTP (binary " + buffer.size() + "-byte body omitted)");
+                JNetLog.e("");
+                JNetLog.e("<-- END HTTP (binary " + buffer.size() + "-byte body omitted)");
                 return response;
             }
 
             if (contentLength != 0) {
-                logger.log("");
-                logger.log(buffer.clone().readString(charset));
+                JNetLog.e("");
+                JNetLog.e(buffer.clone().readString(charset));
             }
 
-            logger.log("<-- END HTTP (" + buffer.size() + "-byte body)");
+            JNetLog.e("<-- END HTTP (" + buffer.size() + "-byte body)");
         }
 
         return response;

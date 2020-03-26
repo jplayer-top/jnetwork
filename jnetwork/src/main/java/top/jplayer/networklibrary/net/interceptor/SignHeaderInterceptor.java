@@ -1,19 +1,13 @@
 package top.jplayer.networklibrary.net.interceptor;
 
 
-import android.util.ArrayMap;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import androidx.annotation.Nullable;
@@ -25,7 +19,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.Buffer;
 import top.jplayer.networklibrary.NetworkApplication;
-import top.jplayer.networklibrary.utils.LogUtil;
+import top.jplayer.networklibrary.utils.JNetLog;
 import top.jplayer.networklibrary.utils.MD5Utils;
 
 import static top.jplayer.networklibrary.net.interceptor.LoggerInterceptor.isPlaintext;
@@ -62,7 +56,7 @@ public class SignHeaderInterceptor implements Interceptor {
             if (isPlaintext(buffer)) {
                 String message = buffer.readString(charset);
                 if (!"".equals(message)) {
-                    LogUtil.e("----动态Header-Sign添加--");
+                    JNetLog.e("----动态Header-Sign添加--");
                     Gson gson = new Gson();
                     TreeMap<String, Object> map = gson.fromJson(message, new TypeToken<TreeMap<String, Object>>() {
                     }.getType());
@@ -75,12 +69,12 @@ public class SignHeaderInterceptor implements Interceptor {
                         builder.append(entry.getValue());
                         builder.append("&");
                     }
-                    LogUtil.e("---Pre-Md5---");
-                    LogUtil.e(builder.toString());
-                    LogUtil.e("------");
+                   JNetLog.e("---Pre-Md5---");
+                   JNetLog.e(builder.toString());
+                   JNetLog.e("------");
                 }
             } else {
-                LogUtil.e("--> WillAdd " + request.method() + " (binary "
+                JNetLog.e("--> WillAdd " + request.method() + " (binary "
                         + body.contentLength() + "-byte body omitted)");
             }
         }

@@ -14,7 +14,6 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import top.jplayer.networklibrary.BuildConfig;
 import top.jplayer.networklibrary.NetworkApplication;
 import top.jplayer.networklibrary.net.cookie.CookieJarImpl;
 import top.jplayer.networklibrary.net.cookie.OKhttpCookieChange;
@@ -29,7 +28,7 @@ import top.jplayer.networklibrary.net.interceptor.ProgressResponseInterceptor;
 import top.jplayer.networklibrary.net.interceptor.ResetHostInterceptor;
 import top.jplayer.networklibrary.net.interceptor.SignHeaderInterceptor;
 import top.jplayer.networklibrary.utils.GsonUtil;
-import top.jplayer.networklibrary.utils.LogUtil;
+import top.jplayer.networklibrary.utils.JNetLog;
 
 
 /**
@@ -70,11 +69,6 @@ public class RetrofitManager {
         return this;
     }
 
-    @NonNull
-    public RetrofitManager client(Context context, LoggerInterceptor.Logger logger) {
-        client(context, NetworkApplication.TIME_OUT, interceptors(logger));
-        return this;
-    }
 
     @NonNull
     public RetrofitManager client(Context context, List<Interceptor> interceptors) {
@@ -98,20 +92,16 @@ public class RetrofitManager {
     /**
      * 默认添加的拦截器
      *
-     * @return
      */
-    private List<Interceptor> interceptors() {
-        return interceptors(LogUtil::e);
-    }
 
-    private List<Interceptor> interceptors(LoggerInterceptor.Logger logger) {
+    public static List<Interceptor> interceptors() {
         List<Interceptor> list = new ArrayList<>();
         list.add(new ResetHostInterceptor());
         list.add(new FixUrlInterceptor());
         list.add(new CommentQueryInterceptor());
         list.add(new CommentHeaderInterceptor());
         list.add(new SignHeaderInterceptor());
-        list.add(new LoggerInterceptor(logger, BuildConfig.debug));
+        list.add(new LoggerInterceptor());
         list.add(new ProgressRequestInterceptor());
         list.add(new JsonFixInterceptor());
         list.add(new CookieInterceptor());

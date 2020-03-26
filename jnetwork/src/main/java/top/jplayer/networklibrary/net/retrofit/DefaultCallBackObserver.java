@@ -14,7 +14,7 @@ import top.jplayer.networklibrary.contract.BasePresenter;
 import top.jplayer.networklibrary.model.bean.IResponseBean;
 import top.jplayer.networklibrary.net.tip.INetTip;
 import top.jplayer.networklibrary.net.tip.NullTip;
-import top.jplayer.networklibrary.utils.LogUtil;
+import top.jplayer.networklibrary.utils.JNetLog;
 
 /**
  * Created by Obl on 2019/8/5.
@@ -78,7 +78,7 @@ public abstract class DefaultCallBackObserver<T extends IResponseBean> implement
 
     @Override
     public void onError(Throwable e) {
-        LogUtil.e(e.getMessage() + "--------");
+        JNetLog.e(e.getMessage() + "--------");
         if (e.getMessage() != null && e.getMessage().contains("401")) {
             errorLogin();
         } else {

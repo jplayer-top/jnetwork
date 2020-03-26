@@ -10,7 +10,7 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import top.jplayer.networklibrary.NetworkApplication;
-import top.jplayer.networklibrary.utils.LogUtil;
+import top.jplayer.networklibrary.utils.JNetLog;
 import top.jplayer.networklibrary.utils.SharePreUtil;
 
 /**
@@ -30,7 +30,7 @@ public class CookieInterceptor implements Interceptor {
             Context context = NetworkApplication.getContext();
             SharePreUtil.saveData(context, "cookie", cookie);
         }
-        LogUtil.e("NetWork", cookie);
+        JNetLog.e(cookie);
         return response;
     }
 }

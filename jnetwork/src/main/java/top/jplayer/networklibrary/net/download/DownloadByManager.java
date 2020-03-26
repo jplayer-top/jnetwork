@@ -14,7 +14,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+
 import androidx.core.content.FileProvider;
+
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,7 +25,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.lang.ref.WeakReference;
 
-import top.jplayer.networklibrary.BuildConfig;
+import top.jplayer.networklibrary.NetworkApplication;
 import top.jplayer.networklibrary.R;
 import top.jplayer.networklibrary.utils.SharePreUtil;
 
@@ -40,12 +43,11 @@ public class DownloadByManager {
     private DownloadChangeObserver mDownLoadChangeObserver;
     private DownloadReceiver mDownloadReceiver;
     private long mReqId;
-    private OnUpdateListener mUpdateListener;
+    private OnDownloadListener mUpdateListener;
     private final NotificationClickReceiver mClickReceiver;
     private int newCode;
     private String verDesc;
     private String verUrl;
-    private static DownloadByManager dManager;
     private String mApkName;
     private final ProgressReceiver mProgressReceiver;
 
@@ -120,7 +122,7 @@ public class DownloadByManager {
     }
 
     /**
-     * 对应 {@link Activity#onResume()}  }
+     *
      */
     public void onResume() {
         //设置监听Uri.parse("content://downloads/my_downloads")
@@ -133,7 +135,7 @@ public class DownloadByManager {
     }
 
     /**
-     * 对应{@link Activity#onPause()} ()}
+     *
      */
     public void onPause() {
         weakReference.get().getContentResolver().unregisterContentObserver(mDownLoadChangeObserver);
@@ -206,9 +208,7 @@ public class DownloadByManager {
     public void onProgressListener(long progress, long total) {
     }
 
-    ;
-
-    public void listener(OnUpdateListener mUpdateListener) {
+    public void listener(OnDownloadListener mUpdateListener) {
         this.mUpdateListener = mUpdateListener;
     }
 
@@ -222,7 +222,13 @@ public class DownloadByManager {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 haveInstallPermission = context.getPackageManager().canRequestPackageInstalls();
                 if (!haveInstallPermission) {//没有权限
-                    Toast.makeText(context, "没有安装外部应用权限", Toast.LENGTH_SHORT).show();
+                    Uri packageURI = Uri.parse("package:" + context.getPackageName());
+                    Intent intentInstall = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                            packageURI);
+//                    context.startActivityForResult(intentInstall, INSTALL_PERMISS_CODE);
+                    if (mUpdateListener != null) {
+                        mUpdateListener.error("没有安装外部应用权限");
+                    }
                 } else {
                     installApk(context, intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1));
                 }
@@ -286,29 +292,12 @@ public class DownloadByManager {
         return false;
     }
 
-    /**
-     * 安装应用
-     */
-    public void installApk(Context context, File apk) {
-        Uri uri;
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(Intent.ACTION_VIEW);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            intent.setDataAndType(Uri.fromFile(apk), "application/vnd.android.package-archive");
-        } else {//Android7.0之后获取uri要用contentProvider
-            uri = FileProvider.getUriForFile(context, BuildConfig.APPID + ".fileProvider", apk);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-        }
-        context.startActivity(intent);
-    }
 
     /**
      * 安装应用
      */
     private void installApk(Context context, long reqId) {
-        Uri uri;
+        Uri uri = null;
         Intent intentInstall = new Intent();
         intentInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intentInstall.setAction(Intent.ACTION_VIEW);
@@ -320,13 +309,26 @@ public class DownloadByManager {
                 File apkFile = queryDownloadedApk(context, reqId);
                 uri = Uri.fromFile(apkFile);
             } else { // Android 7.0 以上
-                File file = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), mApkName);
-                uri = FileProvider.getUriForFile(context, BuildConfig.APPID + ".fileProvider", file);
-                intentInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                try {
+                    File file = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), mApkName);
+                    uri = FileProvider.getUriForFile(context, NetworkApplication.getContext().getPackageName() + ".fileProvider", file);
+                    intentInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    if (mUpdateListener != null) {
+                        mUpdateListener.error(e.getMessage());
+                    }
+                }
             }
             // 安装应用
-            intentInstall.setDataAndType(uri, "application/vnd.android.package-archive");
-            context.startActivity(intentInstall);
+            if (uri != null) {
+                intentInstall.setDataAndType(uri, "application/vnd.android.package-archive");
+                context.startActivity(intentInstall);
+            } else {
+                if (mUpdateListener != null) {
+                    mUpdateListener.error("Uri解析失败");
+                }
+            }
         }
     }
 
@@ -334,7 +336,6 @@ public class DownloadByManager {
     private File queryDownloadedApk(Context context, long downloadId) {
         File targetApkFile = null;
         DownloadManager downloader = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-
         if (downloader != null && downloadId != -1) {
             DownloadManager.Query query = new DownloadManager.Query();
             query.setFilterById(downloadId);
@@ -353,8 +354,10 @@ public class DownloadByManager {
         return targetApkFile;
     }
 
-    public interface OnUpdateListener {
+    public interface OnDownloadListener {
         void update(int currentByte, int totalByte);
+
+        void error(String msg);
     }
 }
 

@@ -11,7 +11,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import top.jplayer.networklibrary.NetworkApplication;
-import top.jplayer.networklibrary.utils.LogUtil;
 
 /**
  * Created by Obl on 2018/3/13.

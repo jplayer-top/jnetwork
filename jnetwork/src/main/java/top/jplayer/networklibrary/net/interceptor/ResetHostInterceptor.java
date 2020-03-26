@@ -23,7 +23,7 @@ public class ResetHostInterceptor implements Interceptor {
 
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
-        Map<String, String> urlMap = NetworkApplication.mUrlMap;
+        Map<String, String> urlMap = NetworkApplication.mHostMap;
         //获取request
         Request request = chain.request();
         //获取request的创建者builder

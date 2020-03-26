@@ -11,7 +11,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import top.jplayer.networklibrary.net.retrofit.ProgressRequestBody;
 import top.jplayer.networklibrary.net.retrofit.ProgressUpDownListener;
-import top.jplayer.networklibrary.utils.LogUtil;
+import top.jplayer.networklibrary.utils.JNetLog;
 
 /**
  * Created by Administrator on 2018/1/26.
@@ -34,7 +34,7 @@ public class ProgressRequestInterceptor implements Interceptor {
 
                         @Override
                         public void onRequestProgress(long progress, long total, boolean done) {
-                            LogUtil.e("NetWork", progress + "/" + total);
+                            JNetLog.e("NetWork", progress + "/" + total);
                         }
                     }))
                     .build();

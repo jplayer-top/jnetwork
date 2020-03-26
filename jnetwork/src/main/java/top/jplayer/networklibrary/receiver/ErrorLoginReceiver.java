@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import top.jplayer.networklibrary.utils.LogUtil;
+import top.jplayer.networklibrary.utils.JNetLog;
 
 /**
  * Created by Obl on 2019/9/23.
@@ -15,6 +15,6 @@ import top.jplayer.networklibrary.utils.LogUtil;
 public class ErrorLoginReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        LogUtil.e("-----ErrorLoginReceiver------");
+        JNetLog.e("-----ErrorLoginReceiver------");
     }
 }

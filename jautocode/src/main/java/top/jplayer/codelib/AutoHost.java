@@ -13,11 +13,8 @@ import java.lang.annotation.Target;
  */
 
 @Retention(RetentionPolicy.CLASS)
-@Target(ElementType.METHOD)
-public @interface AutoResetUrl {
-    String header() default "url_header_host";
+@Target(ElementType.FIELD)
+public @interface AutoHost {
 
     String key();
-
-    String value();
 }
