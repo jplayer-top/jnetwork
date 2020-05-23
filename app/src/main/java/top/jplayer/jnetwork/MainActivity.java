@@ -3,6 +3,7 @@ package top.jplayer.jnetwork;
 import androidx.appcompat.app.AppCompatActivity;
 import top.jplayer.codelib.AutoWired;
 import top.jplayer.codelib.AutoWiredBind;
+import top.jplayer.codelib.IBind;
 import top.jplayer.jnetwork.presenter.MainPresenter;
 import top.jplayer.jnetwork.presenter.TestPresenter;
 import top.jplayer.networklibrary.NetworkApplication;
@@ -17,41 +18,16 @@ public class MainActivity extends AppCompatActivity implements IContract.IView {
     @AutoWired
     public TestPresenter mTestPresenter;
     private DownloadByManager mManager;
+    private IBind mBind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtil.e(NetworkApplication.mHostMap);
         setContentView(R.layout.activity_main);
-        AutoWiredBind.bind(this);
+        mBind = AutoWiredBind.bind(this);
         mPresenter.getList("sdaasd");
         mTestPresenter.getList("bbbbb");
-        mManager = new DownloadByManager(this);
-//        mManager.bind(100, "asdasdas", "http://jplayer.top/app-release.apk")
-//                .download()
-//                .listener(new DownloadByManager.OnDownloadListener() {
-//                    @Override
-//                    public void update(int currentByte, int totalByte) {
-//                        LogUtil.e(currentByte + "/", totalByte + "");
-//                    }
-//
-//                    @Override
-//                    public void error(String msg) {
-//                        LogUtil.e(msg);
-//                    }
-//                });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mManager.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mManager.onPause();
     }
 
     @Override
@@ -67,5 +43,11 @@ public class MainActivity extends AppCompatActivity implements IContract.IView {
     @Override
     public void showEmpty() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mBind.unbind();
     }
 }
