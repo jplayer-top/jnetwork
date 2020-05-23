@@ -4,7 +4,23 @@
 
 # jnetwork
 
-一个基于自定义注解+ JavaPoet +Retrofit+ RxJava 的网络库，轻松几个注解释放你的双手
+一个基于 自定义注解+ JavaPoet +Retrofit+ RxJava 的网络库，轻松几个注解释放你的双手
+
+不管是MVP还是 MVVM。你会发现写的来越来越多，但是有时候会各种new 一个对象，代码洁癖症的我发现了SpringBoot 好像只需要@AutoWrite 就可以将对象导入进来，省去了new环节，那么，Android是否可以同样搞定我定义的这些presenter类？OK。JnetWork 面世了。
+
+基操勿6，本着学习的态度学一下代码生成器以及自定义注解。
+
+目前注解功能
+
+@AutoHost -自动更换请求host
+
+@AutoMP -自动生成MVP中的Model 和Prsenter代码
+
+@AutoWired -自动new Presenter 对象
+
+
+
+- 使用方法
 
 1 .
 
