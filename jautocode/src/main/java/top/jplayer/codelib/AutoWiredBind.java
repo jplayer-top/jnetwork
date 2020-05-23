@@ -10,34 +10,18 @@ import java.lang.reflect.Constructor;
  */
 public class AutoWiredBind {
     public static IBind bind(Object target) {
-        System.out.println("-------------------------------------");
-        //获取Header,调用
-        try {
-            String headerName = "top.jplayer.codelib.Header$HOST";
-            Class<?> headerClass = Class.forName(headerName);
-            Constructor<?> headerConstructor = headerClass.getDeclaredConstructor();
-            headerConstructor.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
         Class<?> targetClass = target.getClass();
         String targetName = targetClass.getName();
         String autoName = targetName + "$Auto";
-
 
         try {
             Class<? extends IBind> bindingClass = (Class<? extends IBind>) targetClass.getClassLoader().loadClass(autoName);
             Constructor constructor = bindingClass.getDeclaredConstructor(target.getClass());
             IBind iBind = (IBind) constructor.newInstance(target);
-
-            System.out.println(iBind.getClass().toString() + "------------");
             return iBind;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("-------------------------------------");
 
         return new IBind<Object>(target) {
             @Override

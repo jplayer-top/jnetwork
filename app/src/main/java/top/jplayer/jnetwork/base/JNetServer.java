@@ -6,7 +6,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Query;
 import top.jplayer.codelib.AutoHost;
 import top.jplayer.codelib.AutoMP;
-import top.jplayer.codelib.Header$HOST;
+import top.jplayer.networklibrary.Header$HOST;
 import top.jplayer.networklibrary.model.bean.IResponseBean;
 
 /**
@@ -26,6 +26,7 @@ public interface JNetServer {
     String GOOGLE_HOST = "http://www.google.com";
 
     @AutoMP
+    @Headers({Header$HOST.HEADER_BAI_DU_HOST})
     @GET("getList")
     Observable<IResponseBean> getList(@Query("test") String string);
 }
