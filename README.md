@@ -2,6 +2,8 @@
 
 
 
+
+
 # jnetwork
 
 一个基于 自定义注解+ JavaPoet +Retrofit+ RxJava 的网络库，轻松几个注解释放你的双手
@@ -21,6 +23,35 @@
 
 
 - 使用方法
+
+```css
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+app build.gradle 文件下
+
+```
+android{
+    '''
+        compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+   		 }
+
+}
+
+dependencies{
+    implementation "com.github.jplayer-top.JNetWork:jnetwork:1.1.0"
+    implementation "com.github.jplayer-top.JNetWork:autocode:1.1.0"
+    annotationProcessor "com.github.jplayer-top.JNetWork:autocode:1.1.0"	
+}
+
+```
 
 1 .
 
