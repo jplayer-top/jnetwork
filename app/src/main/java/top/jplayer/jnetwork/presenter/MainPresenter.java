@@ -1,8 +1,11 @@
 package top.jplayer.jnetwork.presenter;
 
+import android.widget.Toast;
+
 import top.jplayer.jnetwork.LogUtil;
 import top.jplayer.jnetwork.MainActivity;
 import top.jplayer.jnetwork.base.CommonPresenter$Auto;
+import top.jplayer.jnetwork.pojo.EmptyPojo;
 import top.jplayer.networklibrary.model.bean.IResponseBean;
 import top.jplayer.networklibrary.net.retrofit.DefaultCallBackObserver;
 
@@ -17,21 +20,17 @@ public class MainPresenter extends CommonPresenter$Auto<MainActivity> {
         super(iView);
     }
 
-    public void getList(String string) {
-        mModel.getList(string).subscribe(new DefaultCallBackObserver<IResponseBean>(this) {
+    public void getCurTime() {
+        mModel.getCurTime(new EmptyPojo()).subscribe(new DefaultCallBackObserver<IResponseBean>(this) {
             public void responseSuccess(top.jplayer.networklibrary.model.bean.IResponseBean bean) {
                 //responseSuccess;
+                Toast.makeText(mIView, "sdasda", Toast.LENGTH_SHORT).show();
             }
 
             public void responseFail(top.jplayer.networklibrary.model.bean.IResponseBean bean) {
                 //responseFail;
             }
 
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                LogUtil.e(e.getMessage() + "-----------------------");
-            }
         });
     }
 }

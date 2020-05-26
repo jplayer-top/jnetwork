@@ -3,6 +3,7 @@ package top.jplayer.jnetwork;
 import androidx.appcompat.app.AppCompatActivity;
 import top.jplayer.codelib.AutoWired;
 import top.jplayer.codelib.AutoWiredBind;
+import top.jplayer.jnetwork.pojo.EmptyPojo;
 import top.jplayer.jnetwork.presenter.MainPresenter;
 import top.jplayer.networklibrary.NetworkApplication;
 import top.jplayer.networklibrary.contract.IContract;
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements IContract.IView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AutoWiredBind.bind(this);
-        mMainPresenter.getList("sdaasd");
+        mMainPresenter.getCurTime();
         LogUtil.e(NetworkApplication.mHostMap);
         mManager = new DownloadByManager(this);
 //        mManager.bind(100, "asdasdas", "http://jplayer.top/app-release.apk")
