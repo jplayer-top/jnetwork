@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements IContract.IView {
         LogUtil.e(NetworkApplication.mHostMap);
         setContentView(R.layout.activity_main);
         mBind = AutoWiredBind.bind(this);
-        mPresenter.getList("sdaasd");
         mTestPresenter.getList("bbbbb");
     }
 
