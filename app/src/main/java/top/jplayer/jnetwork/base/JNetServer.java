@@ -1,11 +1,12 @@
 package top.jplayer.jnetwork.base;
 
 import io.reactivex.Observable;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
+import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.Query;
 import top.jplayer.codelib.AutoHost;
 import top.jplayer.codelib.AutoMP;
-import top.jplayer.jnetwork.pojo.EmptyPojo;
+import top.jplayer.networklibrary.Header$HOST;
 import top.jplayer.networklibrary.model.bean.IResponseBean;
 
 /**
@@ -16,7 +17,7 @@ import top.jplayer.networklibrary.model.bean.IResponseBean;
  */
 public interface JNetServer {
 
-    String HOST = "https://api.hicmall.com.cn/api/server/";
+    String HOST = "http://jplayer.top/";
 
     @AutoHost(key = "baidu")
     String BAI_DU_HOST = "http://www.baidu.com";
@@ -25,6 +26,7 @@ public interface JNetServer {
     String GOOGLE_HOST = "http://www.google.com";
 
     @AutoMP
-    @POST("customer/uncheck1/time")
-    Observable<BaseBean> getCurTime(@Body() EmptyPojo pojo);
+    @Headers({Header$HOST.HEADER_BAI_DU_HOST})
+    @GET("getList")
+    Observable<IResponseBean> getList(@Query("test") String string);
 }

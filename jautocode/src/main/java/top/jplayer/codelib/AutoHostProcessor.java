@@ -112,7 +112,7 @@ public class AutoHostProcessor extends AbstractProcessor {
                             .addModifiers(Modifier.PUBLIC)
                             .build();
 
-            JavaFile javaFile = JavaFile.builder("top.jplayer.codelib", classBuild).build();
+            JavaFile javaFile = JavaFile.builder("top.jplayer.networklibrary", classBuild).build();
             try {
                 Filer filer = processingEnv.getFiler();
                 javaFile.writeTo(filer);

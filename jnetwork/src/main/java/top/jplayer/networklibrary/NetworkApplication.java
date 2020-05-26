@@ -52,10 +52,19 @@ public class NetworkApplication {
             synchronized (NetworkApplication.class) {
                 if (mInit == null) {
                     mInit = new NetworkApplication(application);
+                    bindHeaderHost();
                 }
             }
         }
         return mInit;
+    }
+
+    private static void bindHeaderHost() {
+        try {
+            Class.forName("top.jplayer.networklibrary.Header$HOST").newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static Context getContext() {

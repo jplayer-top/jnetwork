@@ -11,6 +11,7 @@ public abstract class IBind<T> {
 
     public IBind(T t) {
         this.targer = t;
+
     }
 
     public abstract void unbind();
