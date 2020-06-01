@@ -3,6 +3,7 @@ package top.jplayer.jnetwork;
 import androidx.appcompat.app.AppCompatActivity;
 import top.jplayer.codelib.AutoWired;
 import top.jplayer.jnetwork.presenter.SecondActivityPresenter;
+import top.jplayer.networklibrary.contract.IContract;
 
 /**
  * Created by Obl on 2020/6/1.
@@ -11,9 +12,23 @@ import top.jplayer.jnetwork.presenter.SecondActivityPresenter;
  * github : https://github.com/oblivion0001
  */
 
-public class SecondActivity extends AppCompatActivity {
+public class SecondActivity extends AppCompatActivity implements IContract.IView {
     @AutoWired
     public SecondActivityPresenter mTestPresenter;
 
 
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void showEmpty() {
+
+    }
 }

@@ -20,17 +20,5 @@ public class MainActivityPresenter extends CommonPresenter$Auto<MainActivity> {
         super(iView);
     }
 
-    public void getCurTime() {
-        mModel.getCurTime(new EmptyPojo()).subscribe(new DefaultCallBackObserver<IResponseBean>(this) {
-            public void responseSuccess(top.jplayer.networklibrary.model.bean.IResponseBean bean) {
-                //responseSuccess;
-                Toast.makeText(mIView, "sdasda", Toast.LENGTH_SHORT).show();
-            }
 
-            public void responseFail(top.jplayer.networklibrary.model.bean.IResponseBean bean) {
-                //responseFail;
-            }
-
-        });
-    }
 }

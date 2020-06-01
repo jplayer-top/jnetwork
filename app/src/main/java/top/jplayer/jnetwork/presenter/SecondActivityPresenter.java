@@ -1,6 +1,7 @@
 package top.jplayer.jnetwork.presenter;
 
 import top.jplayer.jnetwork.MainActivity;
+import top.jplayer.jnetwork.SecondActivity;
 import top.jplayer.jnetwork.base.CommonPresenter$Auto;
 
 /**
@@ -9,8 +10,8 @@ import top.jplayer.jnetwork.base.CommonPresenter$Auto;
  * call me : jplayer_top@163.com
  * github : https://github.com/oblivion0001
  */
-public class SecondActivityPresenter extends CommonPresenter$Auto<MainActivity> {
-    public SecondActivityPresenter(MainActivity mainActivity) {
+public class SecondActivityPresenter extends CommonPresenter$Auto<SecondActivity> {
+    public SecondActivityPresenter(SecondActivity mainActivity) {
         super(mainActivity);
     }
 
