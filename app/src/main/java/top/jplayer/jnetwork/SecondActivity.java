@@ -12,7 +12,7 @@ import top.jplayer.networklibrary.contract.IContract;
  * github : https://github.com/oblivion0001
  */
 
-public class SecondActivity extends AppCompatActivity implements IContract.IView {
+public class SecondActivity extends BaseActivity implements IContract.IView {
     @AutoWired
     public SecondActivityPresenter mTestPresenter;
 

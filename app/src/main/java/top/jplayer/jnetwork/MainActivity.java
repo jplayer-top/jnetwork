@@ -12,18 +12,16 @@ import top.jplayer.networklibrary.net.download.DownloadByManager;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity implements IContract.IView {
+public class MainActivity extends BaseActivity implements IContract.IView {
     @AutoWired
     public MainActivityPresenter mPresenter;
     private DownloadByManager mManager;
-    private IBind mBind;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtil.e(NetworkApplication.mHostMap);
         setContentView(R.layout.activity_main);
-        mBind = AutoWiredBind.bind(this);
         mPresenter.getList("sdaasd");
     }
 
@@ -45,6 +43,5 @@ public class MainActivity extends AppCompatActivity implements IContract.IView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBind.unbind();
     }
 }
