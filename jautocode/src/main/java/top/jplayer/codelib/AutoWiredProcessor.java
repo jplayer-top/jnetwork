@@ -67,6 +67,7 @@ public class AutoWiredProcessor extends AbstractProcessor {
             String fullClassName = classElement.getQualifiedName().toString();
             System.out.println(packageOf);
             System.out.println(fullClassName);
+            System.out.println(classElement.getSimpleName().toString());
             LinkedHashSet<MethodSpec> methodSpecs = new LinkedHashSet<>();
             MethodSpec.Builder constructorBuilder = MethodSpec.constructorBuilder()
                     .addModifiers(Modifier.PUBLIC)
@@ -90,50 +91,54 @@ public class AutoWiredProcessor extends AbstractProcessor {
                         System.out.println("variableElement");
                         TypeMirror mirror = variableElement.asType();
                         System.out.println(mirror);
-                        PackageElement packageOf = processingEnv.getElementUtils().getPackageOf(oneElement);
-                        System.out.println(packageOf);
+                        String fixName = mirror.toString().substring(mirror.toString().lastIndexOf(".") + 1);
+                        System.out.println(fixName);
+                        if (fixName.contains(classElement.getSimpleName().toString())) {
+                            PackageElement packageOf = processingEnv.getElementUtils().getPackageOf(oneElement);
+                            System.out.println(packageOf);
 
-                        String longName = mirror.toString();
-                        String sortName = longName.substring(longName.lastIndexOf(".") + 1);
-                        CodeBlock build = CodeBlock.builder()
-                                .add("return ")
-                                .add("new ")
-                                .add("$L", sortName)
-                                .add("(targer)")
-                                .addStatement("")
-                                .build();
-                        MethodSpec methodSpec = MethodSpec
-                                .methodBuilder("get" + sortName)
-                                .addModifiers(Modifier.PUBLIC)
-                                .addParameter(ParameterSpec.builder(TypeName.get(classElement.asType()), "targer").build())
-                                .returns(ClassName.get(variableElement.asType()))
-                                .addCode(build)
-                                .build();
-                        CodeBlock buildSet = CodeBlock.builder()
-                                .add("targer." + variableElement.getSimpleName())
-                                .add(" = new ")
-                                .add("$L", sortName)
-                                .add("(targer)")
-                                .addStatement("")
-                                .build();
-                        MethodSpec methodSpecSet = MethodSpec
-                                .methodBuilder("set" + sortName)
-                                .addModifiers(Modifier.PUBLIC)
-                                .addParameter(ParameterSpec.builder(TypeName.get(classElement.asType()), "targer").build())
-                                .addCode(buildSet)
-                                .build();
-                        constructorBuilder.addCode(
-                                CodeBlock.builder()
-                                        .add("set" + sortName + "(targer)")
-                                        .addStatement("")
-                                        .build());
-                        iBindBuilder.addCode(
-                                CodeBlock.builder()
-                                        .add("targer." + variableElement.getSimpleName() + ".detachView()")
-                                        .addStatement("")
-                                        .build());
-                        methodSpecs.add(methodSpec);
-                        methodSpecs.add(methodSpecSet);
+                            String longName = mirror.toString();
+                            String sortName = longName.substring(longName.lastIndexOf(".") + 1);
+                            CodeBlock build = CodeBlock.builder()
+                                    .add("return ")
+                                    .add("new ")
+                                    .add("$L", sortName)
+                                    .add("(targer)")
+                                    .addStatement("")
+                                    .build();
+                            MethodSpec methodSpec = MethodSpec
+                                    .methodBuilder("get" + sortName)
+                                    .addModifiers(Modifier.PUBLIC)
+                                    .addParameter(ParameterSpec.builder(TypeName.get(classElement.asType()), "targer").build())
+                                    .returns(ClassName.get(variableElement.asType()))
+                                    .addCode(build)
+                                    .build();
+                            CodeBlock buildSet = CodeBlock.builder()
+                                    .add("targer." + variableElement.getSimpleName())
+                                    .add(" = new ")
+                                    .add("$L", sortName)
+                                    .add("(targer)")
+                                    .addStatement("")
+                                    .build();
+                            MethodSpec methodSpecSet = MethodSpec
+                                    .methodBuilder("set" + sortName)
+                                    .addModifiers(Modifier.PUBLIC)
+                                    .addParameter(ParameterSpec.builder(TypeName.get(classElement.asType()), "targer").build())
+                                    .addCode(buildSet)
+                                    .build();
+                            constructorBuilder.addCode(
+                                    CodeBlock.builder()
+                                            .add("set" + sortName + "(targer)")
+                                            .addStatement("")
+                                            .build());
+                            iBindBuilder.addCode(
+                                    CodeBlock.builder()
+                                            .add("targer." + variableElement.getSimpleName() + ".detachView()")
+                                            .addStatement("")
+                                            .build());
+                            methodSpecs.add(methodSpec);
+                            methodSpecs.add(methodSpecSet);
+                        }
                         return super.visitVariable(variableElement, aVoid);
                     }
 

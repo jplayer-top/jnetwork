@@ -9,8 +9,8 @@ import top.jplayer.jnetwork.base.CommonPresenter$Auto;
  * call me : jplayer_top@163.com
  * github : https://github.com/oblivion0001
  */
-public class TestPresenter extends CommonPresenter$Auto<MainActivity> {
-    public TestPresenter(MainActivity mainActivity) {
+public class SecondActivityPresenter extends CommonPresenter$Auto<MainActivity> {
+    public SecondActivityPresenter(MainActivity mainActivity) {
         super(mainActivity);
     }
 

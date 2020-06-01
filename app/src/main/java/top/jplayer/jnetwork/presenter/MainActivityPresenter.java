@@ -12,8 +12,8 @@ import top.jplayer.networklibrary.net.retrofit.DefaultCallBackObserver;
  * call me : jplayer_top@163.com
  * github : https://github.com/oblivion0001
  */
-public class MainPresenter extends CommonPresenter$Auto<MainActivity> {
-    public MainPresenter(MainActivity iView) {
+public class MainActivityPresenter extends CommonPresenter$Auto<MainActivity> {
+    public MainActivityPresenter(MainActivity iView) {
         super(iView);
     }
 
