@@ -74,6 +74,9 @@ public abstract class DefaultCallBackObserver<T extends IResponseBean> implement
     @Override
     public void onNext(T t) {
         onRequestEnd(t);
+        if (NetworkApplication.listener != null) {
+            NetworkApplication.listener.onRspError(t);
+        }
     }
 
     @Override

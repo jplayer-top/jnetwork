@@ -68,6 +68,7 @@ public class NetworkApplication {
 
     public interface INetErrorListener {
         void onError(Object msg);
+        void onRspError(Object msg);
     }
 
     private static void bindHeaderHost() {
