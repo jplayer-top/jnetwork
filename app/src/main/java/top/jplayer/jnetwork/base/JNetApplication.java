@@ -17,6 +17,9 @@ public class JNetApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        NetworkApplication.with(this).retrofit(JNetServer.HOST).bindErrorListener(LogUtil::e);
+        NetworkApplication.with(this).retrofit(JNetServer.HOST).bindErrorListener(msg -> {
+            LogUtil.e(msg);
+            LogUtil.e("===============");
+        });
     }
 }
