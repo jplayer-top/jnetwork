@@ -17,9 +17,14 @@ public class JNetApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        NetworkApplication.with(this).retrofit(JNetServer.HOST).bindErrorListener(msg -> {
-            LogUtil.e(msg);
-            LogUtil.e("===============");
+        NetworkApplication.with(this).retrofit(JNetServer.HOST).bindErrorListener(new NetworkApplication.INetErrorListener() {
+            @Override public void onError(Object msg) {
+
+            }
+
+            @Override public void onRspError(Object msg) {
+
+            }
         });
     }
 }
