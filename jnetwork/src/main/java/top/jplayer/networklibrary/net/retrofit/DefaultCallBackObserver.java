@@ -78,6 +78,9 @@ public abstract class DefaultCallBackObserver<T extends IResponseBean> implement
 
     @Override
     public void onError(Throwable e) {
+        if (NetworkApplication.listener != null) {
+            NetworkApplication.listener.onError(e);
+        }
         JNetLog.e(e.getMessage() + "--------");
         if (e.getMessage() != null && e.getMessage().contains("401")) {
             errorLogin();

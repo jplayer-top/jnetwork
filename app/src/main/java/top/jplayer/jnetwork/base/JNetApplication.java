@@ -1,6 +1,7 @@
 package top.jplayer.jnetwork.base;
 
 import android.app.Application;
+import android.util.Log;
 
 import top.jplayer.jnetwork.LogUtil;
 import top.jplayer.networklibrary.NetworkApplication;
@@ -16,6 +17,6 @@ public class JNetApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        NetworkApplication.with(this).retrofit(JNetServer.HOST);
+        NetworkApplication.with(this).retrofit(JNetServer.HOST).bindErrorListener(LogUtil::e);
     }
 }

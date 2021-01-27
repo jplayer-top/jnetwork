@@ -59,6 +59,17 @@ public class NetworkApplication {
         return mInit;
     }
 
+    public static INetErrorListener listener;
+
+    public NetworkApplication bindErrorListener(INetErrorListener listener) {
+        NetworkApplication.listener = listener;
+        return this;
+    }
+
+    public interface INetErrorListener {
+        void onError(Object msg);
+    }
+
     private static void bindHeaderHost() {
         try {
             Class.forName("top.jplayer.networklibrary.Header$HOST").newInstance();
