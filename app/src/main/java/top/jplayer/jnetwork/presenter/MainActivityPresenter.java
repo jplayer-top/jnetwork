@@ -20,5 +20,16 @@ public class MainActivityPresenter extends CommonPresenter$Auto<MainActivity> {
         super(iView);
     }
 
+    public void killOther() {
+        mModel.killOther().subscribe(new DefaultCallBackObserver<IResponseBean>(this) {
+            public void responseSuccess(top.jplayer.networklibrary.model.bean.IResponseBean bean) {
+                //responseSuccess;
+                mIView.kill(bean);
 
+            }
+            public void responseFail(top.jplayer.networklibrary.model.bean.IResponseBean bean) {
+                //responseFail;
+            }
+        } );
+    }
 }

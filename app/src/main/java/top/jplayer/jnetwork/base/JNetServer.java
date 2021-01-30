@@ -3,6 +3,7 @@ package top.jplayer.jnetwork.base;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import top.jplayer.codelib.AutoHost;
 import top.jplayer.codelib.AutoMP;
@@ -24,9 +25,16 @@ public interface JNetServer {
 
     @AutoHost(key = "google")
     String GOOGLE_HOST = "http://www.google.com";
+    @AutoHost(key = "other")
+    String J_NET_SAFE_HOST = "http://jplayer.iok.la/";
 
     @AutoMP
     @Headers({Header$HOST.HEADER_BAI_DU_HOST})
     @GET("getList")
     Observable<IResponseBean> getList(@Query("test") String string);
+
+    @AutoMP
+    @Headers({Header$HOST.HEADER_J_NET_SAFE_HOST})
+    @POST("/api/users/killOther")
+    Observable<IResponseBean> killOther();
 }

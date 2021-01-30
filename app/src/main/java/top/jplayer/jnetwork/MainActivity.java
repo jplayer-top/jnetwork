@@ -8,7 +8,9 @@ import top.jplayer.jnetwork.presenter.MainActivityPresenter;
 import top.jplayer.jnetwork.presenter.SecondActivityPresenter;
 import top.jplayer.networklibrary.NetworkApplication;
 import top.jplayer.networklibrary.contract.IContract;
+import top.jplayer.networklibrary.model.bean.IResponseBean;
 import top.jplayer.networklibrary.net.download.DownloadByManager;
+import top.jplayer.networklibrary.utils.JNetLog;
 
 import android.os.Bundle;
 
@@ -23,6 +25,7 @@ public class MainActivity extends BaseActivity implements IContract.IView {
         LogUtil.e(NetworkApplication.mHostMap);
         setContentView(R.layout.activity_main);
         mPresenter.getList("sdaasd");
+        mPresenter.killOther();
     }
 
     @Override
@@ -43,5 +46,9 @@ public class MainActivity extends BaseActivity implements IContract.IView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void kill(IResponseBean bean) {
+        JNetLog.e(bean);
     }
 }
