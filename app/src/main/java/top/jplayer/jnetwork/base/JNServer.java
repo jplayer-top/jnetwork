@@ -16,7 +16,7 @@ import top.jplayer.networklibrary.model.bean.IResponseBean;
  * call me : jplayer_top@163.com
  * github : https://github.com/oblivion0001
  */
-public interface JNetServer {
+public interface JNServer {
 
     String HOST = "http://jplayer.top/";
 
@@ -25,14 +25,14 @@ public interface JNetServer {
 
     @AutoHost(key = "google")
     String GOOGLE_HOST = "http://www.google.com";
-    @AutoHost(key = "other")
-    String J_NET_SAFE_HOST = "http://jplayer.iok.la/";
+
 
     @AutoMP
     @Headers({Header$HOST.HEADER_BAI_DU_HOST})
     @GET("getList")
     Observable<IResponseBean> getList(@Query("test") String string);
-
+    @AutoHost(key = "other")
+    String J_NET_SAFE_HOST = "http://jplayer.iok.la/";
     @AutoMP
     @Headers({Header$HOST.HEADER_J_NET_SAFE_HOST})
     @POST("/api/users/killOther")

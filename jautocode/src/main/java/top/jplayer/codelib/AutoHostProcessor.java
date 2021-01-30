@@ -55,6 +55,7 @@ public class AutoHostProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(AutoHost.class);
         if (elements != null && elements.size() > 0) {
+
             Element oneElement = elements.iterator().next();
             AutoHost elementAnnotation = oneElement.getAnnotation(AutoHost.class);
             PackageElement packageOf = processingEnv.getElementUtils().getPackageOf(oneElement);
@@ -63,6 +64,8 @@ public class AutoHostProcessor extends AbstractProcessor {
             TypeElement classElement = (TypeElement) oneElement.getEnclosingElement();
             String fullClassName = classElement.getQualifiedName().toString();
             System.out.println(fullClassName);
+            String simpleName = classElement.getSimpleName().toString();
+            System.out.println("--" + simpleName);
             CodeBlock.Builder staticBuilder = CodeBlock.builder();
             ArrayList<FieldSpec> fieldSpecs = new ArrayList<>();
             for (Element forElemenet : elements) {
@@ -74,7 +77,7 @@ public class AutoHostProcessor extends AbstractProcessor {
                         System.out.println(annotation.key());
                         String fieldKey =
                                 "\"url_header_host:\" + " + "\"" + annotation.key() + "\"";
-                        String fieldValue = "\"url_header_host:\"+JNetServer." + annotation.key();
+                        String fieldValue = "\"url_header_host:\"+" + simpleName + "." + annotation.key();
                         FieldSpec fieldSpecA = FieldSpec.builder(
                                 String.class,
                                 "HEADER_" + variableElement.getSimpleName(),
@@ -88,7 +91,7 @@ public class AutoHostProcessor extends AbstractProcessor {
                         staticBuilder.add("NetworkApplication.mHostMap.put(")
                                 .add("\"$L\"", annotation.key())
                                 .add(",")
-                                .add("$L", "JNetServer." + variableElement.getSimpleName())
+                                .add("$L", simpleName + "." + variableElement.getSimpleName())
                                 .add(")")
                                 .addStatement("");
                         fieldSpecs.add(fieldSpecA);
@@ -99,7 +102,7 @@ public class AutoHostProcessor extends AbstractProcessor {
             }
             ClassName application = ClassName.get("top.jplayer.networklibrary", "NetworkApplication");
             ClassName packageName = ClassName.get(packageOf.getQualifiedName().toString(),
-                    classElement.getSimpleName().toString());
+                    simpleName);
             FieldSpec fieldSpec = FieldSpec.builder(application, "application", Modifier.PUBLIC).build();
             FieldSpec fieldSpecPackage =
                     FieldSpec.builder(packageName, "packageName", Modifier.PUBLIC).build();
