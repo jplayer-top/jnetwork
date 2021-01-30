@@ -88,8 +88,8 @@ public class NetworkApplication {
             @SuppressLint("CheckResult") @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 super.onActivityCreated(activity, savedInstanceState);
                 sActivityList.add(activity);
-                boolean keep = (boolean) SharePreUtil.getData(activity, "jNetSafe", false);
-                if (!keep) {
+                boolean jNetSafe = (boolean) SharePreUtil.getData(activity, "jNetSafe", false);
+                if (jNetSafe) {
                     Observable.timer(10, TimeUnit.SECONDS)
                             .compose(new IoMainSchedule<>())
                             .subscribe(aLong -> {
